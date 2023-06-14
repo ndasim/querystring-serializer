@@ -1,7 +1,7 @@
 {
-  "name": "query-serializer",
-  "version": "1.0.3",
-  "description": "QuerySerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.",
+  "name": "querystring-serializer",
+  "version": "0.0.1",
+  "description": "QuerystringSerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.",
   "main": "index.js",
   "types": "index.d.ts",
   "directories": {
@@ -15,11 +15,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ndasim/query-serializer.git"
+    "url": "https://github.com/ndasim/querystring-serializer.git"
   },
-  "bugs": "https://github.com/ndasim/query-serializer/issues",
-  "homepage": "https://github.com/ndasim/query-serializer",
-  "keywords": ["querystring", "query-string", "nested querystring","nested serializer", "serializer", "querystring deserializer"],
+  "bugs": "https://github.com/ndasim/querystring-serializer/issues",
+  "homepage": "https://github.com/ndasim/querystring-serializer",
+  "keywords": ["querystring", "query-string", "nested querystring","nested serializer", "serializer", "querystring serializer", "querystring deserializer"],
   "author": {
     "name" : "Asım Doğan NAMLI",
     "email" : "asim.dogan.namli@gmail.com",

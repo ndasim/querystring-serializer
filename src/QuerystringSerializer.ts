@@ -1,12 +1,12 @@
 /**
- * QuerySerializer class provides methods to serialize and deserialize
+ * QuerystringSerializer class provides methods to serialize and deserialize
  * objects into URL-encoded query strings, following the rules specified.
  */
 /**
- * QuerySerializer class provides methods to serialize and parse nested objects
+ * QuerystringSerializer class provides methods to serialize and parse nested objects
  * into query strings and vice versa.
  */
-class QuerySerializer {
+class QuerystringSerializer {
   /**
    * Serializes a nested object into a query string.
    * @param obj - The object to be serialized.
@@ -117,4 +117,4 @@ class QuerySerializer {
   }
 }
 
-export default QuerySerializer;
+export default QuerystringSerializer;

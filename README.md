@@ -1,21 +1,21 @@
-# QuerySerializer
+# QuerystringSerializer
 
-QuerySerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.
+QuerystringSerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.
 
 ## Installation
 
-You can install the `QuerySerializer` package using either npm or yarn.
+You can install the `QuerystringSerializer` package using either npm or yarn.
 
 ### npm
 
 ```shell
-npm install query-serializer
+npm install querystring-serializer
 ```
 
 ### yarn
 
 ```shell
-yarn add query-serializer
+yarn add querystring-serializer
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ yarn add query-serializer
 ### Serialization
 
 ```typescript
-import { QuerySerializer } from 'query-serializer';
+import { QuerystringSerializer } from 'query-serializer';
 
 const data = {
   name: 'John Doe',
@@ -35,7 +35,7 @@ const data = {
   },
 };
 
-const queryString = QuerySerializer.serialize(data);
+const queryString = QuerystringSerializer.serialize(data);
 console.log(queryString);
 // Output: name=John%20Doe&age=28&address.street=123%20Main%20St&address.city=New%20York&address.country=USA
 ```
@@ -43,10 +43,10 @@ console.log(queryString);
 ### Deserialization
 
 ```typescript
-import { QuerySerializer } from 'query-serializer';
+import { QuerystringSerializer } from 'query-serializer';
 
 const queryString = 'name=John%20Doe&age=28&address.street=123%20Main%20St&address.city=New%20York&address.country=USA';
-const data = QuerySerializer.parse(queryString);
+const data = QuerystringSerializer.parse(queryString);
 console.log(data);
 // Output: { name: 'John Doe', age: 28, address: { street: '123 Main St', city: 'New York', country: 'USA' } }
 ```
@@ -54,7 +54,7 @@ console.log(data);
 ### Nested Objects in Arrays
 
 ```typescript
-import { QuerySerializer } from 'query-serializer';
+import { QuerystringSerializer } from 'query-serializer';
 
 const data = {
   products: [
@@ -71,7 +71,7 @@ const data = {
   ],
 };
 
-const queryString = QuerySerializer.serialize(data);
+const queryString = QuerystringSerializer.serialize(data);
 console.log(queryString);
 // Output: products[0].name=iPhone%2013&products[0].price=999&products[0].features[0]=Face%20ID&products[0].features[1]=A15%20Bionic%20Chip&products[0].features[2]=5G%20Support&products[1].name=Samsung%20Galaxy%20S21&products[1].price=899&products[1].features[0]=Dynamic%20AMOLED%20Display&products[1].features[1]=Snapdragon%20888&products[1].features[2]=108MP%20Camera
 ```

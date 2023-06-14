@@ -1,2 +1,2 @@
-import QuerySerializer from './lib';
-export default QuerySerializer;
+import QuerystringSerializer from './lib';
+export default QuerystringSerializer;

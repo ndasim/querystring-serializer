@@ -1,3 +1,3 @@
-import QuerySerializer from './QuerySerializer';
+import QuerystringSerializer from './QuerystringSerializer';
 
-export default QuerySerializer;
+export default QuerystringSerializer;
