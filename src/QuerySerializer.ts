@@ -1,125 +1,121 @@
 /**
- * QuerySerializer is a class that performs serialization and deserialization of objects to and from URL-encoded query strings.
+ * QuerySerializer class provides methods to serialize and deserialize
+ * objects into URL-encoded query strings, following the rules specified.
+ */
+/**
+ * QuerySerializer class provides methods to serialize and parse nested objects
+ * into query strings and vice versa.
  */
 class QuerySerializer {
-    /**
-     * Converts the given object into a URL-encoded query string.
-     * @param data - The object to be serialized
-     * @returns The query string representation of the object
-     */
-    public static serialize(data: Record<string, any>): string {
-        const queryStringParams: string[] = [];
-        for (const key in data) {
-            if (Object.prototype.hasOwnProperty.call(data, key)) {
-                const value = data[key];
-                const serializedValue = QuerySerializer.serializeValue(key, value);
-                queryStringParams.push(serializedValue);
-            }
-        }
-        return queryStringParams.join('&');
-    }
+  /**
+   * Serializes a nested object into a query string.
+   * @param obj - The object to be serialized.
+   * @returns The serialized query string.
+   */
+  static nested(obj: any): string {
+    const result: string[] = [];
+
+    // Return empty string if the object is empty or not an object
+    if(Object.keys(obj).length == 0) return ""
+    if(obj.constructor != ({}).constructor) return ""
 
     /**
-     * Converts the given value into a URL-encoded query string representation.
-     * @param key - The key of the value
-     * @param value - The value to be serialized
-     * @returns The URL-encoded query string representation of the value
+     * Traverses the object recursively and constructs the query string.
+     * @param obj - The object to be traversed.
+     * @param prefix - The current prefix for the key in the query string.
      */
-    private static serializeValue(key: string, value: any): string {
-        if (Array.isArray(value)) {
-            return QuerySerializer.serializeArray(key, value);
-        } else if (typeof value === 'object') {
-            return QuerySerializer.serializeObject(key, value);
-        } else {
-            return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
-        }
-    }
-
-    /**
-     * Converts the given array into a URL-encoded query string representation.
-     * @param key - The key of the array
-     * @param array - The array to be serialized
-     * @returns The URL-encoded query string representation of the array
-     */
-    private static serializeArray(key: string, array: any[]): string {
-        const serializedValues: string[] = [];
-        for (let i = 0; i < array.length; i++) {
-            const serializedValue = QuerySerializer.serializeValue(`${key}[${i}]`, array[i]);
-            serializedValues.push(serializedValue);
-        }
-        return serializedValues.join('&');
-    }
-
-    /**
-     * Converts the given object into a URL-encoded query string representation.
-     * @param key - The key of the object
-     * @param object - The object to be serialized
-     * @returns The URL-encoded query string representation of the object
-     */
-    private static serializeObject(key: string, object: Record<string, any>): string {
-        const serializedValues: string[] = [];
-        for (const objectKey in object) {
-            if (Object.prototype.hasOwnProperty.call(object, objectKey)) {
-                const serializedValue = QuerySerializer.serializeValue(`${key}.${objectKey}`, object[objectKey]);
-                serializedValues.push(serializedValue);
-            }
-        }
-        return serializedValues.join('&');
-    }
-
-    /**
-     * Parses the given URL-encoded query string and converts it into an object.
-     * @param queryString - The URL-encoded query string
-     * @returns The object representation of the query string
-     */
-    public static parse(queryString: string): Record<string, any> {
-        const data: Record<string, any> = {};
-        const params = queryString.split('&');
-        for (const param of params) {
-            const [key, value] = param.split('=');
-            if (key && value) {
-                const decodedKey = decodeURIComponent(key);
-                const decodedValue = decodeURIComponent(value);
-                QuerySerializer.parseParam(data, decodedKey, decodedValue);
-            }
-        }
-        return data;
-    }
-
-    /**
-     * Parses the given parameter and assigns it to the data object.
-     * @param data - The data object to assign the parameter to
-     * @param key - The key of the parameter
-     * @param value - The value of the parameter
-     */
-    private static parseParam(data: Record<string, any>, key: string, value: string): void {
-        const keys = key.split('.');
-        let currentObject = data;
-        for (let i = 0; i < keys.length; i++) {
-            const currentKey = keys[i];
-            if (i === keys.length - 1) {
-                // Last key in the chain
-                currentObject[currentKey] = QuerySerializer.parseValue(value);
+    const traverse = (obj: any, prefix: string = '') => {
+      for (const key in obj) {
+        if (Array.isArray(obj[key])) {
+          obj[key].forEach((value: any, index: number) => {
+            if (typeof value === 'object') {
+              traverse(value, `${prefix}${key}[${index}].`);
             } else {
-                // Intermediate key in the chain
-                if (!currentObject[currentKey]) {
-                    currentObject[currentKey] = {};
-                }
-                currentObject = currentObject[currentKey];
+              result.push(`${prefix}${key}[${index}]=${encodeURIComponent(value)}`);
             }
+          });
+        } else if (typeof obj[key] === 'object') {
+          traverse(obj[key], `${prefix}${key}.`);
+        } else {
+          result.push(`${prefix}${key}=${encodeURIComponent(obj[key])}`);
         }
-    }
+      }
+    };
+
+    traverse(obj);
+    return result.join('&');
+  }
+
+  /**
+   * Parses a query string into a nested object.
+   * @param str - The query string to be parsed.
+   * @returns The parsed object.
+   */
+  static parse(str: string): any {
+    const obj: any = {};
+
+    if(str == "") return {}
 
     /**
-     * Parses the given value and converts it to the appropriate data type.
-     * @param value - The value to be parsed
-     * @returns The parsed value
+     * Decodes a key by replacing array indices with dots.
+     * @param key - The key to be decoded.
+     * @returns The decoded key.
      */
-    private static parseValue(value: string): any {
-        if (isNaN(Number(value))) {
-            return value;
+    const decodeKey = (key: string): string => {
+      return key.replace(/\[(\d+)\]/g, '.$1');
+    };
+
+    /**
+     * Sets a value in the object based on the key.
+     * @param key - The key to set the value for.
+     * @param value - The value to be set.
+     * @param obj - The object to set the value in.
+     */
+    const setValue = (key: string, value: any, obj: any) => {
+      const keys = key.split('.');
+      let currentObj = obj;
+
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+
+        if (i === keys.length - 1) {
+          currentObj[k] = value;
         } else {
-            return Number(value);
+          if (!currentObj[k]) {
+            if (isNaN(Number(keys[i + 1]))) {
+              currentObj[k] = {};
+            } else {
+              currentObj[k] = [];
+            }
+          }
+
+          currentObj = currentObj[k];
         }
+      }
+    };
+
+    const pairs = str.split('&');
+
+    for (const pair of pairs) {
+      const [key, value] = pair.split('=');
+      const decodedKey = decodeKey(decodeURIComponent(key));
+      const decodedValue = decodeURIComponent(value);
+
+      const val =
+          decodedValue === 'true'
+              ? true
+              : decodedValue === 'false'
+                  ? false
+                  : /^\d+$/.test(decodedValue)
+                      ? parseInt(decodedValue, 10)
+                      : decodedValue;
+
+      setValue(decodedKey, val, obj);
     }
+
+    return obj;
+  }
 }
+
+
+export default QuerySerializer;
