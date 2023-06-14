@@ -1,9 +1,9 @@
 {
   "name": "query-serializer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "QuerySerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.",
-  "main": "index.js.js",
-  "types": "./lib/main.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "directories": {
     "lib": "src"
   },
