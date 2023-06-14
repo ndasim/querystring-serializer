@@ -12,32 +12,32 @@ class QuerySerializer {
    * @param obj - The object to be serialized.
    * @returns The serialized query string.
    */
-  static nested(obj: any): string {
+  static serialize(obj: any): string {
     const result: string[] = [];
 
     // Return empty string if the object is empty or not an object
-    if(Object.keys(obj).length == 0) return ""
-    if(obj.constructor != ({}).constructor) return ""
+    if (Object.keys(obj).length === 0) return '';
+    if (obj.constructor !== {}.constructor) return '';
 
     /**
      * Traverses the object recursively and constructs the query string.
-     * @param obj - The object to be traversed.
+     * @param object - The object to be traversed.
      * @param prefix - The current prefix for the key in the query string.
      */
-    const traverse = (obj: any, prefix: string = '') => {
-      for (const key in obj) {
-        if (Array.isArray(obj[key])) {
-          obj[key].forEach((value: any, index: number) => {
+    const traverse = (object: any, prefix: string = '') => {
+      for (const key in object) {
+        if (Array.isArray(object[key])) {
+          object[key].forEach((value: any, index: number) => {
             if (typeof value === 'object') {
               traverse(value, `${prefix}${key}[${index}].`);
             } else {
               result.push(`${prefix}${key}[${index}]=${encodeURIComponent(value)}`);
             }
           });
-        } else if (typeof obj[key] === 'object') {
-          traverse(obj[key], `${prefix}${key}.`);
+        } else if (typeof object[key] === 'object') {
+          traverse(object[key], `${prefix}${key}.`);
         } else {
-          result.push(`${prefix}${key}=${encodeURIComponent(obj[key])}`);
+          result.push(`${prefix}${key}=${encodeURIComponent(object[key])}`);
         }
       }
     };
@@ -54,7 +54,7 @@ class QuerySerializer {
   static parse(str: string): any {
     const obj: any = {};
 
-    if(str == "") return {}
+    if (str === '') return {};
 
     /**
      * Decodes a key by replacing array indices with dots.
@@ -69,11 +69,11 @@ class QuerySerializer {
      * Sets a value in the object based on the key.
      * @param key - The key to set the value for.
      * @param value - The value to be set.
-     * @param obj - The object to set the value in.
+     * @param object - The object to set the value in.
      */
-    const setValue = (key: string, value: any, obj: any) => {
+    const setValue = (key: string, value: any, object: any) => {
       const keys = key.split('.');
-      let currentObj = obj;
+      let currentObj = object;
 
       for (let i = 0; i < keys.length; i++) {
         const k = keys[i];
@@ -102,13 +102,13 @@ class QuerySerializer {
       const decodedValue = decodeURIComponent(value);
 
       const val =
-          decodedValue === 'true'
-              ? true
-              : decodedValue === 'false'
-                  ? false
-                  : /^\d+$/.test(decodedValue)
-                      ? parseInt(decodedValue, 10)
-                      : decodedValue;
+        decodedValue === 'true'
+          ? true
+          : decodedValue === 'false'
+            ? false
+            : /^\d+$/.test(decodedValue)
+              ? parseInt(decodedValue, 10)
+              : decodedValue;
 
       setValue(decodedKey, val, obj);
     }
@@ -116,6 +116,5 @@ class QuerySerializer {
     return obj;
   }
 }
-
 
 export default QuerySerializer;
