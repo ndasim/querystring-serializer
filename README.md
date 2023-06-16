@@ -2,6 +2,8 @@
 
 QuerystringSerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.
 
+It's inspired by popular package qs (https://www.npmjs.com/package/qs)
+
 ## Installation
 
 You can install the `QuerystringSerializer` package using either npm or yarn.
