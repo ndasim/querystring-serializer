@@ -18,10 +18,12 @@
   </a>
   <!-- Travis build -->
   <a href="https://app.travis-ci.com/github/ndasim/querystring-serializer">
-  <img src="https://app.travis-ci.com/ndasim/querystring-serializer.svg?branch=master" alt="Build status"/>
+  <img src="https://app.travis-ci.com/ndasim/querystring-serializer.svg" alt="Build status"/>
   </a>
-  <!-- Coveralls coverage -->
-  <a href='https://coveralls.io/github/ndasim/querystring-serializer?branch=master'><img src='https://coveralls.io/repos/github/ndasim/querystring-serializer/badge.svg?branch=master' alt='Coverage Status' /></a>
+  <!-- Codecov coverage -->
+    <a href="https://codecov.io/gh/ndasim/querystring-serializer" >
+    <img src="https://codecov.io/gh/ndasim/querystring-serializer/branch/master/graph/badge.svg?token=J07LVGUNZQ"/>
+    </a>
   <!-- NPM version -->
   <a href="https://npmjs.org/package/querystring-serializer">
     <img src="https://img.shields.io/npm/v/querystring-serializer.svg" alt="NPM Version"/>
