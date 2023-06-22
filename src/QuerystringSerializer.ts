@@ -1,9 +1,9 @@
-interface NamedParameters{
-  delimiter: string,
-  arrayStart: string,
-  arrayEnd: string,
-  equalityChar: string,
-  nestDelimiter: string
+interface NamedParameters {
+  delimiter: string;
+  arrayStart: string;
+  arrayEnd: string;
+  equalityChar: string;
+  nestDelimiter: string;
 }
 
 /**
@@ -16,8 +16,8 @@ class QuerystringSerializer {
     arrayStart: '[',
     arrayEnd: ']',
     equalityChar: '=',
-    nestDelimiter: '.'
-  }
+    nestDelimiter: '.',
+  };
 
   /**
    * Serializes an object into a query string.
@@ -30,14 +30,14 @@ class QuerystringSerializer {
    * @returns The serialized query string.
    */
   static serialize(
-      obj: any,
-      {
-        delimiter,
-        arrayStart,
-        arrayEnd,
-        equalityChar,
-        nestDelimiter
-      } : NamedParameters = QuerystringSerializer.defaultParameters
+    obj: any,
+    {
+      delimiter,
+      arrayStart,
+      arrayEnd,
+      equalityChar,
+      nestDelimiter,
+    }: NamedParameters = QuerystringSerializer.defaultParameters,
   ): string {
     const result: string[] = [];
 
@@ -78,14 +78,14 @@ class QuerystringSerializer {
    * @returns The parsed object.
    */
   static parse(
-      str: string,
-      {
-        delimiter,
-        arrayStart,
-        arrayEnd,
-        equalityChar,
-        nestDelimiter
-      } : NamedParameters = QuerystringSerializer.defaultParameters
+    str: string,
+    {
+      delimiter,
+      arrayStart,
+      arrayEnd,
+      equalityChar,
+      nestDelimiter,
+    }: NamedParameters = QuerystringSerializer.defaultParameters,
   ): any {
     const obj: any = {};
 
@@ -136,13 +136,13 @@ class QuerystringSerializer {
       const decodedValue = decodeURIComponent(value);
 
       const val =
-          decodedValue === 'true'
-              ? true
-              : decodedValue === 'false'
-                  ? false
-                  : /^\d+$/.test(decodedValue)
-                      ? parseInt(decodedValue, 10)
-                      : decodedValue;
+        decodedValue === 'true'
+          ? true
+          : decodedValue === 'false'
+            ? false
+            : /^\d+$/.test(decodedValue)
+              ? parseInt(decodedValue, 10)
+              : decodedValue;
 
       setValue(decodedKey, val, obj);
     }

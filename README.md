@@ -21,9 +21,7 @@
   <img src="https://app.travis-ci.com/ndasim/querystring-serializer.svg?branch=master" alt="Build status"/>
   </a>
   <!-- Coveralls coverage -->
-  <a href="https://coveralls.io/github/ndasim/querystring-serializer">
-    <img src="https://img.shields.io/coveralls/DylanPiercey/querystring-serializer.svg" alt="Test Coverage"/>
-  </a>
+  <a href='https://coveralls.io/github/ndasim/querystring-serializer?branch=master'><img src='https://coveralls.io/repos/github/ndasim/querystring-serializer/badge.svg?branch=master' alt='Coverage Status' /></a>
   <!-- NPM version -->
   <a href="https://npmjs.org/package/querystring-serializer">
     <img src="https://img.shields.io/npm/v/querystring-serializer.svg" alt="NPM Version"/>
@@ -34,7 +32,7 @@
   </a>
   <!-- Size -->
   <a href="https://npmjs.org/package/querystring-serializer">
-    <img src="https://img.shields.io/badge/size-29b-green.svg" alt="Browser Bundle Size"/>
+    <img src="https://img.shields.io/badge/size-16kb-green.svg" alt="Browser Bundle Size"/>
   </a>
 </h1>
 
