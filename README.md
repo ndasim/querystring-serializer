@@ -1,4 +1,42 @@
-# QuerystringSerializer
+<h1 align="center">
+  <!-- Logo -->
+  <br/>
+  QuerystringSerializer
+	<br/>
+
+  <!-- Stability -->
+  <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
+    <img src="https://img.shields.io/badge/stability-stable-brightgreen.svg" alt="API Stability"/>
+  </a>
+  <!-- TypeScript -->
+  <a href="http://typescriptlang.org">
+    <img src="https://img.shields.io/badge/%3C%2F%3E-typescript-blue.svg" alt="TypeScript"/>
+  </a>
+  <!-- Prettier -->
+  <a href="https://github.com/prettier/prettier">
+    <img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" alt="Styled with prettier"/>
+  </a>
+  <!-- Travis build -->
+  <a href="https://app.travis-ci.com/github/ndasim/querystring-serializer">
+  <img src="https://app.travis-ci.com/ndasim/querystring-serializer.svg?branch=master" alt="Build status"/>
+  </a>
+  <!-- Coveralls coverage -->
+  <a href="https://coveralls.io/github/ndasim/querystring-serializer">
+    <img src="https://img.shields.io/coveralls/DylanPiercey/querystring-serializer.svg" alt="Test Coverage"/>
+  </a>
+  <!-- NPM version -->
+  <a href="https://npmjs.org/package/querystring-serializer">
+    <img src="https://img.shields.io/npm/v/querystring-serializer.svg" alt="NPM Version"/>
+  </a>
+  <!-- Downloads -->
+  <a href="https://npmjs.org/package/querystring-serializer">
+    <img src="https://img.shields.io/npm/dm/querystring-serializer.svg" alt="Downloads"/>
+  </a>
+  <!-- Size -->
+  <a href="https://npmjs.org/package/querystring-serializer">
+    <img src="https://img.shields.io/badge/size-29b-green.svg" alt="Browser Bundle Size"/>
+  </a>
+</h1>
 
 QuerystringSerializer is a TypeScript class that provides serialization and deserialization of objects to and from URL-encoded query strings. It supports handling nested objects and arrays within the serialization and deserialization processes.
 
