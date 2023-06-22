@@ -1,78 +1,112 @@
-/**
- * QuerystringSerializer class provides methods to serialize and deserialize
- * objects into URL-encoded query strings, following the rules specified.
- */
+interface NamedParameters{
+  delimiter: string,
+  arrayStart: string,
+  arrayEnd: string,
+  equalityChar: string,
+  nestDelimiter: string
+}
+
 /**
  * QuerystringSerializer class provides methods to serialize and parse nested objects
  * into query strings and vice versa.
  */
 class QuerystringSerializer {
+  static readonly defaultParameters = {
+    delimiter: '&',
+    arrayStart: '[',
+    arrayEnd: ']',
+    equalityChar: '=',
+    nestDelimiter: '.'
+  }
+
   /**
-   * Serializes a nested object into a query string.
-   * @param obj - The object to be serialized.
+   * Serializes an object into a query string.
+   * @param obj - The object to serialize.
+   * @param delimiter - The delimiter used to separate key-value pairs in the query string. (Default: '&')
+   * @param arrayStart - The string that indicates the start of an array in the object. (Default: '[')
+   * @param arrayEnd - The string that indicates the end of an array in the object. (Default: ']')
+   * @param equalityChar - The character used to assign values to keys in the query string. (Default: '=')
+   * @param nestDelimiter - The delimiter used to represent nested objects in the query string. (Default: '.')
    * @returns The serialized query string.
    */
-  static serialize(obj: any): string {
+  static serialize(
+      obj: any,
+      {
+        delimiter,
+        arrayStart,
+        arrayEnd,
+        equalityChar,
+        nestDelimiter
+      } : NamedParameters = QuerystringSerializer.defaultParameters
+  ): string {
     const result: string[] = [];
 
     // Return empty string if the object is empty or not an object
     if (Object.keys(obj).length === 0) return '';
     if (obj.constructor !== {}.constructor) return '';
 
-    /**
-     * Traverses the object recursively and constructs the query string.
-     * @param object - The object to be traversed.
-     * @param prefix - The current prefix for the key in the query string.
-     */
     const traverse = (object: any, prefix: string = '') => {
       for (const key in object) {
         if (Array.isArray(object[key])) {
           object[key].forEach((value: any, index: number) => {
             if (typeof value === 'object') {
-              traverse(value, `${prefix}${key}[${index}].`);
+              traverse(value, `${prefix}${key}${arrayStart}${index}${arrayEnd}${nestDelimiter}`);
             } else {
-              result.push(`${prefix}${key}[${index}]=${encodeURIComponent(value)}`);
+              result.push(`${prefix}${key}${arrayStart}${index}${arrayEnd}${equalityChar}${encodeURIComponent(value)}`);
             }
           });
         } else if (typeof object[key] === 'object') {
-          traverse(object[key], `${prefix}${key}.`);
+          traverse(object[key], `${prefix}${key}${nestDelimiter}`);
         } else {
-          result.push(`${prefix}${key}=${encodeURIComponent(object[key])}`);
+          result.push(`${prefix}${key}${equalityChar}${encodeURIComponent(object[key])}`);
         }
       }
     };
 
     traverse(obj);
-    return result.join('&');
+    return result.join(delimiter);
   }
 
   /**
-   * Parses a query string into a nested object.
-   * @param str - The query string to be parsed.
+   * Parses a query string into an object.
+   * @param str - The query string to parse.
+   * @param delimiter - The delimiter used to separate key-value pairs in the query string. (Default: '&')
+   * @param arrayStart - The string that indicates the start of an array in the object. (Default: '[')
+   * @param arrayEnd - The string that indicates the end of an array in the object. (Default: ']')
+   * @param equalityChar - The character used to assign values to keys in the query string. (Default: '=')
+   * @param nestDelimiter - The delimiter used to represent nested objects in the query string. (Default: '.')
    * @returns The parsed object.
    */
-  static parse(str: string): any {
+  static parse(
+      str: string,
+      {
+        delimiter,
+        arrayStart,
+        arrayEnd,
+        equalityChar,
+        nestDelimiter
+      } : NamedParameters = QuerystringSerializer.defaultParameters
+  ): any {
     const obj: any = {};
 
     if (str === '') return {};
 
-    /**
-     * Decodes a key by replacing array indices with dots.
-     * @param key - The key to be decoded.
-     * @returns The decoded key.
-     */
     const decodeKey = (key: string): string => {
-      return key.replace(/\[(\d+)\]/g, '.$1');
+      // Helper function to escape regex special characters
+      const escapeRegExp = (string: string) => {
+        return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+      };
+
+      const escapedArrayStart = escapeRegExp(arrayStart);
+      const escapedArrayEnd = escapeRegExp(arrayEnd);
+
+      const regexPattern = new RegExp(`${escapedArrayStart}(\\d+)${escapedArrayEnd}`, 'g');
+
+      return key.replace(regexPattern, `${nestDelimiter}$1`);
     };
 
-    /**
-     * Sets a value in the object based on the key.
-     * @param key - The key to set the value for.
-     * @param value - The value to be set.
-     * @param object - The object to set the value in.
-     */
     const setValue = (key: string, value: any, object: any) => {
-      const keys = key.split('.');
+      const keys = key.split(nestDelimiter);
       let currentObj = object;
 
       for (let i = 0; i < keys.length; i++) {
@@ -94,21 +128,21 @@ class QuerystringSerializer {
       }
     };
 
-    const pairs = str.split('&');
+    const pairs = str.split(delimiter);
 
     for (const pair of pairs) {
-      const [key, value] = pair.split('=');
+      const [key, value] = pair.split(equalityChar);
       const decodedKey = decodeKey(decodeURIComponent(key));
       const decodedValue = decodeURIComponent(value);
 
       const val =
-        decodedValue === 'true'
-          ? true
-          : decodedValue === 'false'
-            ? false
-            : /^\d+$/.test(decodedValue)
-              ? parseInt(decodedValue, 10)
-              : decodedValue;
+          decodedValue === 'true'
+              ? true
+              : decodedValue === 'false'
+                  ? false
+                  : /^\d+$/.test(decodedValue)
+                      ? parseInt(decodedValue, 10)
+                      : decodedValue;
 
       setValue(decodedKey, val, obj);
     }
