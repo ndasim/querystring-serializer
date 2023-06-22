@@ -14,4 +14,4 @@ install:
 script:
   - npm test
 after_success:
-  - coverage
+  - bash <(curl -s https://codecov.io/bash)
