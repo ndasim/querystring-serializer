@@ -62,7 +62,7 @@ const queryString = 'a=b&c.d=1&c.e=true';
 const data = QuerystringSerializer.parse(queryString);
 ```
 ``data`` will be:
-```json
+```
 {
     a: 'b', 
     c: {
@@ -94,7 +94,7 @@ a=b&c[0].f[0]=g&c[0].f[1]=h
 ```
 
 Same way, ``QuerystringSerializer.serialize("a=b&c[0].f[0]=g&c[0].f[1]=h'");`` will produce:
-```json
+```
 {
     a: 'b', 
     c: [
@@ -181,7 +181,7 @@ const data = QuerystringSerializer.parse(
 );
 ```
 ``data`` will be:
-```json
+```
 {
   beautiful: ['querystring'],
 };
