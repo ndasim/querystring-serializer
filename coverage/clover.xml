@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1687432167070" clover="3.2.0">
-  <project timestamp="1687432167070" name="All files">
+<coverage generated="1689420553326" clover="3.2.0">
+  <project timestamp="1689420553326" name="All files">
     <metrics statements="64" coveredstatements="64" conditionals="25" coveredconditionals="22" methods="8" coveredmethods="8" elements="97" coveredelements="94" complexity="0" loc="64" ncloc="64" packages="1" files="2" classes="2"/>
     <file name="QuerystringSerializer.ts" path="/Users/ndasim/IdeaProjects/queryserializer/src/QuerystringSerializer.ts">
       <metrics statements="62" coveredstatements="62" conditionals="25" coveredconditionals="22" methods="8" coveredmethods="8"/>
